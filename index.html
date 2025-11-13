@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Life-course Learning Community - Home</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%; width: 100%;
+      background: url('backPhoto.jpg') no-repeat center center fixed, linear-gradient(120deg, #fff 90%, #f5efdb 100%);
+      background-size: cover;
+      font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;
+    }
+    body { min-height: 100vh; width: 100vw; }
+    .fill-page {
+      min-height: 100vh; min-width: 100vw;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-start;
+      background: inherit;
+      overflow: hidden;
+      transition: background 0.4s;
+    }
+    .banner {
+      width: 100%;
+      background: linear-gradient(135deg, #f4c542 76%, #e6b830 100%);
+      color: #473801;
+      padding: 14px 0 10px 0;
+      font-size: 16px;
+      font-weight: 600;
+      text-align: center;
+      letter-spacing: 0.01em;
+      box-shadow: 0 2px 10px rgba(244,197,66,0.10);
+      border-bottom: 2px solid #e6b830;
+      margin-bottom: 9px;
+      z-index: 6;
+      position: relative;
+    }
+    .banner b {
+      color: #fff;
+      font-weight: 700;
+      text-shadow: 0 1px 8px #b99a2b66;
+    }
+    .logo-container {
+      text-align: center;
+      margin: 23px 0 12px 0;
+    }
+    .logo-container img {
+      width: 70px; height: 70px;
+      border-radius: 50%; border: 2.6px solid #b9a02a;
+      object-fit: cover;
+      box-shadow: 0 4px 18px rgba(244,197,66,0.16);
+      transition: transform .3s, box-shadow .35s;
+    }
+    .logo-container img:hover {
+      transform: scale(1.08) rotate(4deg);
+      box-shadow: 0px 8px 28px rgba(244,197,66,0.25);
+      cursor:pointer;
+    }
+    .page-header {
+      text-align: center;
+      font-size: 27px;
+      color: #fff;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+      font-weight: 800;
+      margin: 0 0 6px 0;
+      letter-spacing: 0.02em;
+      line-height: 1.18;
+    }
+    .page-desc {
+      font-size: 16px;
+      color: #ad921b;
+      text-align: center;
+      font-weight: 500;
+      margin: 0 0 18px 0;
+    }
+    .how-to-join {
+      background: #fffbe9e6;
+      color: #67521c;
+      border-radius: 12px;
+      border: 2px solid #f4c542;
+      padding: 17px 17px 13px 17px;
+      box-shadow: 0 2px 10px rgba(244,197,66,0.09);
+      font-size: 15.5px;
+      margin: 12px 0 12px 0;
+      text-align: left;
+      max-width: 440px;
+      animation: fadeIn .45s;
+    }
+    .how-to-join-title {
+      font-size: 17px;
+      font-weight: bold;
+      margin-bottom: 6px;
+      color: #b9a02a;
+      letter-spacing: 0.01em;
+    }
+    .how-to-join-steps {
+      margin-left: 11px;
+      margin-top: 4px;
+      margin-bottom: 5px;
+      padding-left: 0;
+      font-size: 15px;
+    }
+    .how-to-join-steps li {
+      margin-bottom: 4px;
+      line-height: 1.58;
+    }
+    .menu-bar {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 18px 0 15px 0;
+      flex-wrap: wrap;
+    }
+    .menu-item {
+      background: linear-gradient(135deg, #fffbe9 80%, #fffadc 100%);
+      border: 2px solid #f4c542;
+      border-radius: 13px;
+      padding: 15px 32px;
+      font-size: 16px;
+      color: #67521c;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.19s, color 0.15s, transform .19s, box-shadow .15s;
+      box-shadow: 0 2px 11px rgba(244,197,66,0.10);
+      user-select: none;
+      outline: none;
+      position: relative;
+      z-index: 2;
+    }
+    .menu-item:hover, .menu-item:focus {
+      background: linear-gradient(135deg, #f4c542 90%, #e6b830 100%);
+      color: #fff;
+      transform: scale(1.08) translateY(-2px);
+      box-shadow: 0 8px 18px rgba(244,197,66,0.19);
+    }
+    .menu-item.active {
+      border-color: #d4a520;
+      box-shadow: 0 12px 18px rgba(244,197,66,0.17);
+      color: #b9a02a;
+      background: #fffbe9;
+    }
+    .main-section {
+      margin: 0 auto;
+      max-width: 600px;
+      width: 97vw;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 280px;
+    }
+    .welcome-section {
+      margin-top: 7px;
+      text-align: center;
+      background: #fffbe9;
+      padding: 16px 10px;
+      border-radius: 13px;
+      border: 2px solid #f4c542;
+      font-size: 16px;
+      color: #65531e;
+      font-weight: 500;
+      box-shadow: 0 3px 7px rgba(244,197,66,0.10);
+      animation: fadeIn .42s;
+    }
+    .feature-section {
+      display: none;
+      background: #fffbe9;
+      border: 2px solid #f4c542;
+      border-radius: 13px;
+      margin-top: 11px;
+      padding: 12px 10px 10px 10px;
+      color: #2c3e50;
+      font-size: 15.2px;
+      box-shadow: 0 2px 12px rgba(244,197,66,0.10);
+      animation: fadeFeature 0.37s;
+    }
+    @keyframes fadeIn {
+      from {opacity:0;transform:translateY(12px);}
+      to {opacity:1;transform:translateY(0);}
+    }
+    @keyframes fadeFeature {
+      from {opacity:0;transform:translateY(12px);}
+      to {opacity:1;transform:translateY(0);}
+    }
+    .cta-btn {
+      background: linear-gradient(135deg, #f4c542 90%, #e6b830 100%);
+      border: none; border-radius: 15px;
+      color: #2c3e50;
+      font-size: 18px;
+      font-weight: 700;
+      padding: 14px 0;
+      margin-top: 16px;
+      width: 100%;
+      cursor: pointer;
+      box-shadow: 0 5px 18px rgba(244, 197, 66, 0.18);
+      transition: background .17s, transform .17s;
+      outline: none;
+      text-align: center;
+      letter-spacing: 0.03em;
+    }
+    .cta-btn:hover, .cta-btn:focus {
+      background: linear-gradient(135deg, #e6b830 80%, #f4c542 100%);
+      transform: translateY(-3px) scale(1.045);
+      color: #222;
+    }
+    .footer {
+      width: 100%;
+      text-align: center;
+      font-size: 13px;
+      color: #b9a02a;
+      padding: 20px 0 5px 0;
+      opacity: 0.94;
+      letter-spacing: 0.012em;
+    }
+    @media (max-width: 600px) {
+      .main-section { max-width:99vw; }
+      .menu-item { font-size:12.4px; padding:10px 15px;}
+      .page-header { font-size:19px;}
+      .welcome-section, .feature-section, .how-to-join { font-size: 13.2px;}
+      .how-to-join-title{font-size:15px;}
+      .cta-btn{font-size:13px;padding:10px 0;}
+      .logo-container img { width:48px; height:48px;}
+      .banner{font-size:13px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="fill-page">
+    <div class="banner">
+      <b>Welcome!</b> Home of readers</b>
+    </div>
+    <div class="logo-container">
+      <img src="pageLogo.jpg" alt="Life-course Learning Logo" id="logoImage">
+    </div>
+    <div class="page-header">Life-course Learning Community</div>
+    <div class="page-desc">
+      Skills, books, and lifelong connections.<br>
+      <span style="font-size:13px;">Explore, learn, and support knowledge for everyone.</span>
+    </div>
+    <div class="how-to-join">
+      <div class="how-to-join-title">How to Join &amp; Access Resources</div>
+      <ol class="how-to-join-steps">
+        <li>Click <b>Join Now</b> below or use the menu to explore our community.</li>
+        <li>Register your free account with your email.</li>
+        <li>Start downloading books, journals, and more instantly.</li>
+        <li>If you wish, you can <b>support our mission</b> from your dashboard—the platform stays free for all readers.</li>
+      </ol>
+    </div>
+    <!-- Interactive menu bar -->
+    <div class="menu-bar">
+      <div class="menu-item active" tabindex="0" data-feature="about">About Us</div>
+      <div class="menu-item" tabindex="0" data-feature="membership">Membership</div>
+      <div class="menu-item" tabindex="0" data-feature="events">Events</div>
+      <div class="menu-item" tabindex="0" data-feature="contact">Contact</div>
+    </div>
+    <div class="main-section">
+      <div class="welcome-section" id="welcomeSection">
+        Welcome! Find your next read, connect with passionate members, and help us shape the future of open learning.
+      </div>
+      <div class="feature-section" id="feature-about">
+        <strong>About Us</strong>
+        <br>
+        We help you grow through life-course learning: meet passionate readers, discover practical skills, and join a supportive community.
+      </div>
+      <div class="feature-section" id="feature-membership">
+        <strong>Membership</strong>
+        <br>
+        Create an account to download and connect with others—no payment required. Monthly support from our members helps keep the doors open, but is always up to you!
+      </div>
+      <div class="feature-section" id="feature-events">
+        <strong>Events</strong>
+        <br>
+        Attend online and in-person meetups, workshops, and speaker sessions. There’s always something new to discover.
+      </div>
+      <div class="feature-section" id="feature-contact">
+        <strong>Contact</strong>
+        <br>
+        Reach us at <a href="mailto:info@lifecourselearning.com" style="color:#b9a02a;text-decoration:underline;">info@lifecourselearning.com</a> or call <span style="color:#b9a02a;">+254 712 345678</span>.
+      </div>
+      <button class="cta-btn" id="ctaBtn" type="button">Join Now</button>
+    </div>
+    <div class="footer">
+      &copy; 2025 Life-course Learning &mdash; Empowering Lifelong Growth
+    </div>
+  </div>
+  <script>
+    // Section toggling interactivity
+    const menuItems = document.querySelectorAll('.menu-item');
+    const welcomeSection = document.getElementById('welcomeSection');
+    const features = {
+      about: document.getElementById('feature-about'),
+      membership: document.getElementById('feature-membership'),
+      events: document.getElementById('feature-events'),
+      contact: document.getElementById('feature-contact')
+    };
+    menuItems.forEach(item => {
+      item.addEventListener('click', () => {
+        menuItems.forEach(mi => mi.classList.remove('active'));
+        item.classList.add('active');
+        Object.values(features).forEach(fs => fs.style.display = 'none');
+        const which = item.getAttribute('data-feature');
+        if (features[which]) {
+          welcomeSection.style.display = 'none';
+          features[which].style.display = 'block';
+        }
+      });
+      item.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') item.click();
+      });
+    });
+    // Clicking Logo or Home resets view to welcome section
+    document.getElementById('logoImage').addEventListener('click', () => {
+      welcomeSection.style.display = 'block';
+      Object.values(features).forEach(fs => fs.style.display = 'none');
+      menuItems.forEach(mi => mi.classList.remove('active'));
+      menuItems[0].classList.add('active');
+    });
+    document.querySelector('.page-header').addEventListener('click', () => {
+      welcomeSection.style.display = 'block';
+      Object.values(features).forEach(fs => fs.style.display = 'none');
+      menuItems.forEach(mi => mi.classList.remove('active'));
+      menuItems[0].classList.add('active');
+    });
+    // Join Now button: instant navigation (no stuck state)
+    const ctaBtn = document.getElementById('ctaBtn');
+    ctaBtn.addEventListener('click', () => {
+      ctaBtn.textContent = "Redirecting...";
+      ctaBtn.disabled = true;
+      setTimeout(() => {
+        ctaBtn.textContent = "Join Now";
+        ctaBtn.disabled = false;
+        window.location.href = "loginPage.html"; // update with your join/signup page
+      }, 700);
+    });
+    // Reset Join Now button label if user comes back via logo/header menu
+    document.getElementById('logoImage').addEventListener('click', ()=>{
+      ctaBtn.textContent = "Join Now"; ctaBtn.disabled = false;
+    });
+    document.querySelector('.page-header').addEventListener('click', ()=>{
+      ctaBtn.textContent = "Join Now"; ctaBtn.disabled = false;
+    });
+  </script>
+</body>
+</html>

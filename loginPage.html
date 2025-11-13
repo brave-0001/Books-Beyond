@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login & Account Creation</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      background: url('backphoto.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle at 20% 50%, rgba(244,197,66,0.08) 0%, transparent 60%),
+                  radial-gradient(circle at 80% 80%, rgba(230,184,48,0.07) 0%, transparent 70%);
+      animation: gradientShift 8s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+    @keyframes gradientShift {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 0.9; }
+    }
+    .auth-container {
+      background: linear-gradient(145deg, #fff9e6ee, #ffffffee);
+      border: 3px solid #f4c542;
+      border-radius: 18px;
+      max-width: 310px;
+      width: 96vw;
+      padding: 14px 11px 18px 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+      animation: slideIn 0.5s;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 10px 40px rgba(244,197,66,0.14), 0 3px 10px rgba(0,0,0,0.08);
+      backdrop-filter: blur(7px);
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(24px) scale(0.96);}
+      to { opacity: 1; transform: translateY(0) scale(1);}
+    }
+    /* LOGO */
+    .logo-container {
+      text-align: center;
+      margin-bottom: 6px;
+    }
+    .logo-container img {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: 2.2px solid #f4c542;
+      object-fit: cover;
+      box-shadow: 0 3px 11px rgba(244,197,66,0.22);
+      transition: transform 0.33s, box-shadow 0.33s;
+    }
+    .logo-container img:hover {
+      transform: scale(1.08) rotate(2.5deg);
+      box-shadow: 0 8px 24px rgba(244,197,66,0.36);
+    }
+    .auth-header { text-align: center; }
+    .auth-header h2 {
+      font-size: 17px; color: #2c3e50; margin-bottom: 2px; font-weight: 700;
+    }
+    .auth-header p {
+      font-size: 11px; color: #a48941; margin-bottom: 0;
+    }
+    .auth-tabs {
+      display: flex; justify-content: center; gap: 7px; margin-bottom: 2px;
+    }
+    .auth-tab {
+      padding: 6px 13px;
+      border: 2px solid transparent;
+      border-radius: 11px;
+      background: #f3e7bb;
+      color: #7f651d;
+      font-weight: 600;
+      font-size: 11.8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 1px 5px rgba(244,197,66,0.09);
+    }
+    .auth-tab.active {
+      background: linear-gradient(135deg, #f4c542, #e6b830);
+      color: #2c3e50;
+      border-color: #d4a520;
+      box-shadow: 0 3px 10px rgba(244, 197, 66, 0.19);
+      transform: scale(1.05);
+      z-index: 1;
+    }
+    .auth-form {
+      display: flex; flex-direction: column; gap: 7px;
+      font-size: 12px;
+      animation: formSlide 0.37s;
+      transition: all 0.1s;
+    }
+    @keyframes formSlide {
+      from { opacity: 0; transform: translateX(-8px);}
+      to   { opacity: 1; transform: translateX(0);}
+    }
+    .form-group {
+      display: flex; flex-direction: column; gap: 1.5px;
+      position: relative; margin-bottom: 2px;
+    }
+    .form-group label {
+      font-weight: 600; color: #2c3e50; font-size: 12px;
+      margin-bottom: 1px; margin-left: 2px;
+    }
+    .form-group input {
+      padding: 6px 10px;
+      border: 2px solid #f7e7a2;
+      border-radius: 7px;
+      font-size: 12px;
+      background: #fff9e6;
+      font-weight: 500;
+      transition: border 0.2s, box-shadow 0.2s;
+    }
+    .form-group input:focus {
+      border-color: #f4c542;
+      background: #fffef5;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(244,197,66,0.08);
+    }
+    .form-group input:focus + .form-error { display: none;}
+    .form-group.has-value label { color: #b9a02a;}
+    .form-error {
+      color: #e74c3c; font-size: 10px; min-height: 12px; margin: 0 2px;
+      animation: shake 0.22s;
+    }
+    @keyframes shake {
+      0%,100%{transform:translateX(0);} 30%{transform:translateX(-3px);}
+      60%{transform:translateX(3px);}
+    }
+    .auth-actions {
+      display: flex; flex-direction: column; gap: 7px; margin-top: 0px;
+    }
+    .auth-submit {
+      background: linear-gradient(135deg, #f4c542, #e6b830);
+      color: #222;
+      padding: 8px 0;
+      border: none;
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.11s, opacity 0.10s;
+      box-shadow: 0 2px 8px rgba(244, 197, 66, 0.09);
+      opacity: 1;
+      letter-spacing: 0.01em;
+      position: relative;
+      overflow: hidden;
+    }
+    .auth-submit:disabled {
+      opacity: 0.61;
+      cursor: not-allowed;
+    }
+    .auth-submit.loading::after {
+      content: '';
+      position: absolute; width: 10px; height: 10px;
+      top: 50%; left: 50%; margin-left: -6px; margin-top: -6px;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-top-color: #222;
+      border-radius: 50%; animation: spin 0.47s linear infinite;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .toggle-link {
+      text-align: center; font-size: 11px; color: #65531e;
+      cursor: pointer; text-decoration: underline; margin-top: 2px;
+      background: none; border: none; padding: 0;
+      transition: color 0.17s;
+    }
+    .toggle-link:hover { color: #f4c542;}
+    .form-success {
+      color: #27ae60; font-size: 11.7px; text-align: center; font-weight: 600;
+      animation: successPulse 0.33s;
+      background: rgba(39, 174, 96, 0.07);
+      border-radius: 6px;
+      margin-top: 3px; padding: 3px;
+    }
+    @keyframes successPulse {
+      0% { transform: scale(0.9); opacity: 0;}
+      60%{transform: scale(1.04);}
+      100%{transform: scale(1); opacity: 1;}
+    }
+    .password-toggle {
+      position: absolute; right: 8px; top: 23px;
+      cursor: pointer;
+      background: none; border: none; outline: none;
+      width: 19px; height: 19px; padding: 0;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 2;
+    }
+    .password-toggle svg {
+      width: 17px; height:17px; color: #b2a14c;
+      stroke-width: 1.55;
+      transition: color 0.14s;
+    }
+    .password-toggle:hover svg { color: #f4c542;}
+    .password-toggle.inactive svg { color: #bdbdbd;}
+    .password-strength {
+      height: 2.6px;
+      background: #e0e0e0;
+      border-radius: 2px;
+      margin-top: 1.5px;
+      overflow: hidden;
+      display: none;
+    }
+    .password-strength-bar {
+      height: 100%; width: 0; transition: width 0.15s, background 0.13s;
+      border-radius: 2px;
+    }
+    .password-strength.show { display: block;}
+    @media (max-width: 430px) {
+      .auth-container { max-width:97vw; padding: 9vw 2vw 11vw 2vw;}
+      .logo-container img { width:46px; height:46px;}
+      .auth-header h2 { font-size:13px;}
+      .auth-tab { font-size:10.5px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <div class="logo-container">
+      <!-- Use your own logo filename and alt text below -->
+      <img src="pageLogo.jpg" alt="Life-course Learning Logo" id="logoImage">
+    </div>
+    <div class="auth-header">
+      <h2 id="formTitle">Login</h2>
+      <p>Welcome to Life-course Learning</p>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="loginTab" type="button">Login</button>
+      <button class="auth-tab" id="registerTab" type="button">Create Account</button>
+    </div>
+    <form id="loginForm" class="auth-form" autocomplete="on">
+      <div class="form-group">
+        <label for="loginEmail">Email</label>
+        <input type="email" id="loginEmail" required autocomplete="email" placeholder="Brevian@email.com" />
+        <div class="form-error" id="loginEmailError"></div>
+      </div>
+      <div class="form-group">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" required autocomplete="current-password" placeholder="Password" />
+        <button class="password-toggle" id="loginPasswordToggle" type="button" tabindex="-1" aria-label="Show password">
+          <svg aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="8" ry="5"/><circle cx="12" cy="12" r="2.7" /></svg>
+        </button>
+        <div class="form-error" id="loginPasswordError"></div>
+      </div>
+      <div class="auth-actions">
+        <button type="submit" class="auth-submit" id="loginSubmit"><span>Login</span></button>
+      </div>
+      <div class="form-success" id="loginSuccess"></div>
+    </form>
+    <form id="registerForm" class="auth-form" autocomplete="on" style="display:none">
+      <div class="form-group">
+        <label for="regName">Full Name</label>
+        <input type="text" id="regName" required autocomplete="name" placeholder="Brevian Emmanuel" />
+        <div class="form-error" id="regNameError"></div>
+      </div>
+      <div class="form-group">
+        <label for="regEmail">Email</label>
+        <input type="email" id="regEmail" required autocomplete="email" placeholder="Brevian@email.com" />
+        <div class="form-error" id="regEmailError"></div>
+      </div>
+      <div class="form-group">
+        <label for="regPassword">Password</label>
+        <input type="password" id="regPassword" required autocomplete="new-password" placeholder="Password" />
+        <button class="password-toggle" id="regPasswordToggle" type="button" tabindex="-1" aria-label="Show password">
+          <svg aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="8" ry="5"/><circle cx="12" cy="12" r="2.7" /></svg>
+        </button>
+        <div class="password-strength" id="passwordStrength">
+          <div class="password-strength-bar" id="passwordStrengthBar"></div>
+        </div>
+        <div class="form-error" id="regPasswordError"></div>
+      </div>
+      <div class="form-group">
+        <label for="regConfirm">Confirm Password</label>
+        <input type="password" id="regConfirm" required autocomplete="new-password" placeholder="Repeat password" />
+        <button class="password-toggle" id="regConfirmToggle" type="button" tabindex="-1" aria-label="Show password">
+          <svg aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="8" ry="5"/><circle cx="12" cy="12" r="2.7" /></svg>
+        </button>
+        <div class="form-error" id="regConfirmError"></div>
+      </div>
+      <div class="auth-actions">
+        <button type="submit" class="auth-submit" id="registerSubmit"><span>Create Account</span></button>
+      </div>
+      <div class="form-success" id="registerSuccess"></div>
+    </form>
+  </div>
+  <script>
+    // Elements
+    const loginTab = document.getElementById('loginTab');
+    const registerTab = document.getElementById('registerTab');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const formTitle = document.getElementById('formTitle');
+    // Tab switching with animation and clear
+    loginTab.onclick = () => {
+      loginTab.classList.add('active');
+      registerTab.classList.remove('active');
+      loginForm.style.display = '';
+      registerForm.style.display = 'none';
+      formTitle.textContent = 'Login';
+      clearAllErrors();
+    };
+    registerTab.onclick = () => {
+      loginTab.classList.remove('active');
+      registerTab.classList.add('active');
+      loginForm.style.display = 'none';
+      registerForm.style.display = '';
+      formTitle.textContent = 'Create Account';
+      clearAllErrors();
+    };
+
+    function clearAllErrors() {
+      document.querySelectorAll('.form-error').forEach(e => e.textContent = '');
+      document.querySelectorAll('.form-success').forEach(e => e.textContent = '');
+    }
+    function clearRegisterFields() {
+      registerForm.regName.value = '';
+      registerForm.regEmail.value = '';
+      registerForm.regPassword.value = '';
+      registerForm.regConfirm.value = '';
+      document.getElementById('passwordStrength').classList.remove('show');
+      document.getElementById('passwordStrengthBar').style.width = "0";
+    }
+    // Focus has-value animation for label
+    document.querySelectorAll('input').forEach(input => {
+      input.addEventListener('input', function() {
+        this.parentElement.classList.toggle('has-value', !!this.value.trim());
+      });
+    });
+    // Professional SVG eye icon interaction
+    function setupPasswordToggle(toggleId, inputId) {
+      const toggle = document.getElementById(toggleId);
+      const input = document.getElementById(inputId);
+      let isShown = false;
+      toggle.addEventListener('click', function() {
+        isShown = !isShown;
+        input.type = isShown ? 'text' : 'password';
+        toggle.classList.toggle('inactive', !isShown);
+        toggle.innerHTML = isShown
+          ? `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="8" ry="5"/><circle cx="12" cy="12" r="2.7" /><line x1="4" y1="20" x2="20" y2="4" stroke-width="2"/></svg>`
+          : `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="8" ry="5"/><circle cx="12" cy="12" r="2.7" /></svg>`;
+      });
+    }
+    setupPasswordToggle('loginPasswordToggle', 'loginPassword');
+    setupPasswordToggle('regPasswordToggle', 'regPassword');
+    setupPasswordToggle('regConfirmToggle', 'regConfirm');
+    function checkPasswordStrength(password) {
+      let strength = 0;
+      if (password.length >= 6) strength += 1;
+      if (/[A-Z]/.test(password)) strength += 1;
+      if (/[0-9]/.test(password)) strength += 1;
+      if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+      return strength;
+    }
+    const regPassword = document.getElementById('regPassword');
+    const strengthIndicator = document.getElementById('passwordStrength');
+    const strengthBar = document.getElementById('passwordStrengthBar');
+    regPassword.addEventListener('input', function() {
+      const password = this.value;
+      if (password.length === 0) {
+        strengthIndicator.classList.remove('show'); strengthBar.style.width="0"; return;
+      }
+      strengthIndicator.classList.add('show');
+      let strength = checkPasswordStrength(password);
+      strengthBar.style.width = (strength * 25) + "%";
+      if (strength === 1)      strengthBar.style.background = '#e74c3c';
+      else if (strength === 2) strengthBar.style.background = '#f39c12';
+      else if (strength === 3) strengthBar.style.background = '#f1c40f';
+      else if (strength >= 4)  strengthBar.style.background = '#27ae60';
+    });
+    // Login
+    loginForm.onsubmit = function(e) {
+      e.preventDefault();
+      clearAllErrors();
+      const email = loginForm.loginEmail.value.trim();
+      const pass = loginForm.loginPassword.value;
+      const submitBtn = document.getElementById('loginSubmit');
+      let valid = true;
+      if (!email.includes('@') || !email.includes('.')) {
+        document.getElementById('loginEmailError').textContent = 'Enter a valid email.';
+        valid = false;
+      }
+      if (pass.length < 5) {
+        document.getElementById('loginPasswordError').textContent = 'Password too short.';
+        valid = false;
+      }
+      if (!valid) return;
+      submitBtn.classList.add('loading');
+      submitBtn.querySelector('span').textContent = 'Logging in...';
+      setTimeout(() => {
+        submitBtn.classList.remove('loading');
+        submitBtn.querySelector('span').textContent = 'Login';
+        document.getElementById('loginSuccess').textContent = '✓ Login successful! Redirecting...';
+        clearRegisterFields();
+        setTimeout(() => {
+          // window.location.href = 'dashboard.html';
+        }, 1500);
+      }, 1200);
+    };
+    // Registration
+    registerForm.onsubmit = function(e) {
+      e.preventDefault();
+      clearAllErrors();
+      const name = registerForm.regName.value.trim();
+      const email = registerForm.regEmail.value.trim();
+      const pass = registerForm.regPassword.value;
+      const pass2 = registerForm.regConfirm.value;
+      const submitBtn = document.getElementById('registerSubmit');
+      let valid = true;
+      const passwordValid = (
+        pass.length >= 6 &&
+        /[A-Z]/.test(pass) &&
+        /[0-9]/.test(pass) &&
+        /[^A-Za-z0-9]/.test(pass)
+      );
+      if (name.length < 2) {
+        document.getElementById('regNameError').textContent = 'Enter your full name.';
+        valid = false;
+      }
+      if (!email.includes('@') || !email.includes('.')) {
+        document.getElementById('regEmailError').textContent = 'Enter a valid email.';
+        valid = false;
+      }
+      if (!passwordValid) {
+        document.getElementById('regPasswordError').textContent = 'Min 6 chars, contain uppercase, number, symbol.';
+        valid = false;
+      }
+      if (pass !== pass2) {
+        document.getElementById('regConfirmError').textContent = 'Passwords do not match.';
+        valid = false;
+      }
+      if (!valid) return;
+      submitBtn.classList.add('loading');
+      submitBtn.querySelector('span').textContent = 'Creating...';
+      setTimeout(() => {
+        submitBtn.classList.remove('loading');
+        submitBtn.querySelector('span').textContent = 'Create Account';
+        document.getElementById('registerSuccess').textContent = '✓ Account created. Please Login.';
+        setTimeout(() => {
+          clearRegisterFields();
+          loginTab.click();
+        }, 1600);
+      }, 1200);
+    };
+  </script>
+</body>
+</html>

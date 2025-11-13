@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Books and Beyond - Monthly Contribution</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: url('backphoto.jpg') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+    }
+
+    .card {
+      background: linear-gradient(145deg, #fff9e6cc, #ffffffcc);
+      border: 3px solid #f4c542;
+      border-radius: 24px;
+      padding: 20px 18px;
+      max-width: 260px; /* about half width */
+      width: 100%;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+      font-size: 14px;
+      user-select: none;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 20px;
+      color: #2c3e50;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      color: #7f8c8d;
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      font-size: 18px;
+      color: #2c3e50;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .payment-types {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .payment-btn {
+      flex: 1;
+      padding: 9px 0;
+      border: 2px solid #ddd;
+      border-radius: 12px;
+      background: white;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-align: center;
+      line-height: 1.3;
+      user-select: none;
+    }
+
+    .payment-btn:hover:not(.active) {
+      border-color: #f4c542;
+      transform: translateY(-1.5px);
+    }
+
+    .payment-btn.active {
+      background: white;
+      border-color: #6b5742;
+    }
+
+    .payment-btn[data-type="mpesa"].active {
+      color: rgb(0, 128, 0);
+    }
+
+    .payment-btn[data-type="airtel"].active {
+      color: rgb(227, 34, 34);
+    }
+
+    h3 {
+      text-align: center;
+      font-size: 16px;
+      margin-bottom: 16px;
+      color: #2c3e50;
+      user-select: none;
+    }
+
+    .membership-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .card-option {
+      background: #fffcf5;
+      border: 2px solid #f4c542;
+      border-radius: 12px;
+      padding: 14px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      font-size: 12px;
+      user-select: none;
+    }
+
+    .card-option:hover {
+      background: #fff9e6;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(244, 197, 66, 0.3);
+    }
+
+    .card-option.selected {
+      background: linear-gradient(135deg, #f4c542, #e6b830);
+      border-color: #d4a520;
+      box-shadow: 0 6px 18px rgba(244, 197, 66, 0.4);
+      color: white;
+    }
+
+    .card-type {
+      font-weight: 700;
+      color: inherit;
+      margin-bottom: 6px;
+    }
+
+    .card-amount {
+      font-weight: 700;
+      color: #d4a520;
+    }
+
+    .card-option.selected .card-amount {
+      color: white;
+    }
+
+    .custom-amount {
+      background: #fffcf5;
+      border: 2px solid #f4c542;
+      border-radius: 12px;
+      padding: 16px 12px;
+      margin-top: 10px;
+      text-align: center;
+      font-size: 12px;
+      cursor: default;
+      user-select: none;
+      transition: all 0.25s ease;
+    }
+
+    .custom-amount.selected {
+      background: linear-gradient(135deg, #f4c542, #e6b830);
+      border-color: #d4a520;
+      box-shadow: 0 6px 18px rgba(244, 197, 66, 0.4);
+      color: white;
+      user-select: auto;
+    }
+
+    .custom-amount label {
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: block;
+      color: inherit;
+    }
+
+    .custom-amount input {
+      width: 100%;
+      max-width: 140px;
+      padding: 8px 12px;
+      font-size: 13px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 600;
+      user-select: auto;
+    }
+
+    .custom-amount input:focus {
+      outline: none;
+      border-color: #f4c542;
+    }
+
+    .phone-input-section {
+      margin-top: 20px;
+      padding: 16px 12px;
+      background: #fffcf5;
+      border: 2px solid #f4c542;
+      border-radius: 12px;
+      font-size: 13px;
+    }
+
+    .phone-input-section label {
+      display: block;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 8px;
+      text-align: center;
+      user-select: none;
+    }
+
+    .phone-input-section input {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 13px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 500;
+      user-select: auto;
+    }
+
+    .phone-input-section input:focus {
+      outline: none;
+      border-color: #f4c542;
+    }
+
+    #phoneError {
+      color: red;
+      font-size: 11px;
+      text-align: center;
+      margin-top: 6px;
+      display: none;
+      user-select: none;
+    }
+
+    .selected-info {
+      text-align: center;
+      margin-top: 20px;
+      padding: 14px 12px;
+      background: white;
+      border-radius: 12px;
+      border: 2px solid #f4c542;
+      font-size: 13px;
+      user-select: none;
+    }
+
+    .selected-info h4 {
+      color: #2c3e50;
+      margin-bottom: 6px;
+      font-size: 16px;
+    }
+
+    .selected-info p {
+      color: #555;
+      font-size: 12px;
+      margin: 0;
+    }
+
+    #submitBtn {
+      display: block;
+      margin: 26px auto 0 auto;
+      background: #f4c542;
+      color: #2c3e50;
+      border: none;
+      padding: 12px 36px;
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: 24px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, opacity 0.25s ease;
+      user-select: none;
+      box-shadow: 0 3px 8px rgba(244, 197, 66, 0.6);
+      opacity: 0.4;
+      pointer-events:none; /* disable clicks when inactive */
+    }
+
+    #submitBtn.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #submitBtn:hover.active {
+      background-color: #d4a520;
+    }
+  </style>
+</head>
+<body>
+  <div class="card" role="form" aria-label="Books and Beyond payment form">
+    <div class="header">
+      <h1></h1>
+      <p class="subtitle">Monthly Membership Contribution</p>
+    </div>
+
+    <h2>Payment Method</h2>
+
+    <div class="payment-types" role="radiogroup" aria-labelledby="paymentMethodLabel">
+      <button class="payment-btn active" data-type="mpesa" role="radio" aria-checked="true" tabindex="0" id="mpesaBtn">
+        Lipa na<br />Mpesa
+      </button>
+      <button class="payment-btn" data-type="airtel" role="radio" aria-checked="false" tabindex="-1" id="airtelBtn">
+        Airtel<br />Money
+      </button>
+    </div>
+
+    <h3>Membership Support Card</h3>
+
+    <div class="membership-cards" role="list" aria-label="Membership card options">
+      <div class="card-option" data-card="bronze" data-amount="150" role="listitem" tabindex="0" aria-selected="false">
+        <div class="card-type">Bronze</div>
+        <div class="card-amount">Sh. 150</div>
+      </div>
+      <div class="card-option" data-card="silver" data-amount="500" role="listitem" tabindex="0" aria-selected="false">
+        <div class="card-type">Silver</div>
+        <div class="card-amount">Sh. 500</div>
+      </div>
+      <div class="card-option" data-card="gold" data-amount="1000" role="listitem" tabindex="0" aria-selected="false">
+        <div class="card-type">Gold</div>
+        <div class="card-amount">Sh. 1000</div>
+      </div>
+    </div>
+
+    <div class="custom-amount" id="customAmountDiv" aria-label="Custom payment amount">
+      <label for="customAmount">Any Other Amount</label>
+      <input
+        type="number"
+        id="customAmount"
+        placeholder="Enter amount (Sh.)"
+        min="1"
+        aria-describedby="customAmountHelp"
+      />
+    </div>
+
+    <div
+      class="phone-input-section"
+      id="phoneInputSection"
+      style="display: none"
+      aria-live="assertive"
+    >
+      <label for="phoneNumber" id="phoneLabel">Enter your M-Pesa number</label>
+      <input
+        type="tel"
+        id="phoneNumber"
+        placeholder="e.g., 0712345678"
+        maxlength="10"
+        aria-describedby="phoneError"
+      />
+      <p id="phoneError">Please enter a valid 10-digit phone number starting with 07.</p>
+    </div>
+
+    <div id="selectedInfo" class="selected-info" style="display: none" aria-live="polite">
+      <h4>Contribution Summary</h4>
+      <p id="selectionText"></p>
+    </div>
+
+    <button id="submitBtn" aria-disabled="true" type="button" disabled>
+      Submit Payment
+    </button>
+  </div>
+
+  <script>
+    const paymentBtns = document.querySelectorAll('.payment-btn');
+    const cardOptions = document.querySelectorAll('.card-option');
+    const customAmountDiv = document.getElementById('customAmountDiv');
+    const customAmountInput = document.getElementById('customAmount');
+    const selectedInfo = document.getElementById('selectedInfo');
+    const selectionText = document.getElementById('selectionText');
+    const phoneInputSection = document.getElementById('phoneInputSection');
+    const phoneLabel = document.getElementById('phoneLabel');
+    const phoneNumber = document.getElementById('phoneNumber');
+    const phoneError = document.getElementById('phoneError');
+    const submitBtn = document.getElementById('submitBtn');
+
+    let selectedPaymentMethod = 'mpesa';
+    let selectedCard = null;
+    let selectedAmount = null;
+    let isCustomAmount = false;
+
+    // Validate phone number format (Kenyan numbers starting with 07 and 10 digits)
+    function isValidPhoneNumber(number) {
+      return /^07\d{8}$/.test(number);
+    }
+
+    function updateSubmitButtonState() {
+      const phoneValid = phoneNumber.value && isValidPhoneNumber(phoneNumber.value);
+      if (selectedAmount && phoneValid) {
+        submitBtn.disabled = false;
+        submitBtn.classList.add('active');
+        submitBtn.setAttribute('aria-disabled', 'false');
+      } else {
+        submitBtn.disabled = true;
+        submitBtn.classList.remove('active');
+        submitBtn.setAttribute('aria-disabled', 'true');
+      }
+    }
+
+    // Payment method selection
+    paymentBtns.forEach((btn, idx) => {
+      btn.addEventListener('click', () => {
+        paymentBtns.forEach((b, i) => {
+          b.classList.remove('active');
+          b.setAttribute('aria-checked', 'false');
+          b.tabIndex = -1;
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-checked', 'true');
+        btn.tabIndex = 0;
+        btn.focus();
+
+        selectedPaymentMethod = btn.dataset.type;
+
+        // Update phone label and placeholder based on payment method
+        if (selectedPaymentMethod === 'mpesa') {
+          phoneLabel.textContent = 'Enter your M-Pesa number';
+          phoneNumber.placeholder = 'e.g., 0712345678';
+        } else {
+          phoneLabel.textContent = 'Enter your Airtel Money number';
+          phoneNumber.placeholder = 'e.g., 0732345678';
+        }
+
+        updateSelection();
+        validatePhoneAndToggleError();
+        updateSubmitButtonState();
+      });
+    });
+
+    // Card option selection
+    cardOptions.forEach((option) => {
+      option.addEventListener('click', () => {
+        cardOptions.forEach((o) => {
+          o.classList.remove('selected');
+          o.setAttribute('aria-selected', 'false');
+        });
+        option.classList.add('selected');
+        option.setAttribute('aria-selected', 'true');
+        customAmountDiv.classList.remove('selected');
+        customAmountInput.value = '';
+
+        selectedCard = option.dataset.card;
+        selectedAmount = option.dataset.amount;
+        isCustomAmount = false;
+        updateSelection();
+        validatePhoneAndToggleError();
+        updateSubmitButtonState();
+      });
+      // add keyboard support for card options
+      option.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          option.click();
+        }
+      });
+    });
+
+    // Custom amount handling
+    customAmountInput.addEventListener('focus', () => {
+      cardOptions.forEach((o) => {
+        o.classList.remove('selected');
+        o.setAttribute('aria-selected', 'false');
+      });
+      customAmountDiv.classList.add('selected');
+      selectedCard = null;
+      isCustomAmount = true;
+    });
+
+    customAmountInput.addEventListener('input', () => {
+      selectedAmount = customAmountInput.value.trim();
+
+      // Auto-select card tier if amount matches
+      if (selectedAmount === '150') {
+        cardOptions.forEach((o) => {
+          o.classList.remove('selected');
+          o.setAttribute('aria-selected', 'false');
+        });
+        cardOptions[0].classList.add('selected');
+        cardOptions[0].setAttribute('aria-selected', 'true');
+        selectedCard = 'bronze';
+        isCustomAmount = false;
+      } else if (selectedAmount === '500') {
+        cardOptions.forEach((o) => {
+          o.classList.remove('selected');
+          o.setAttribute('aria-selected', 'false');
+        });
+        cardOptions[1].classList.add('selected');
+        cardOptions[1].setAttribute('aria-selected', 'true');
+        selectedCard = 'silver';
+        isCustomAmount = false;
+      } else if (selectedAmount === '1000') {
+        cardOptions.forEach((o) => {
+          o.classList.remove('selected');
+          o.setAttribute('aria-selected', 'false');
+        });
+        cardOptions[2].classList.add('selected');
+        cardOptions[2].setAttribute('aria-selected', 'true');
+        selectedCard = 'gold';
+        isCustomAmount = false;
+      } else {
+        cardOptions.forEach((o) => {
+          o.classList.remove('selected');
+          o.setAttribute('aria-selected', 'false');
+        });
+        selectedCard = null;
+      }
+
+      updateSelection();
+      validatePhoneAndToggleError();
+      updateSubmitButtonState();
+    });
+
+    // Phone input validation and error display
+    phoneNumber.addEventListener('input', () => {
+      validatePhoneAndToggleError();
+      updateSubmitButtonState();
+    });
+
+    function validatePhoneAndToggleError() {
+      if (phoneNumber.value === '') {
+        phoneError.style.display = 'none';
+        return false;
+      }
+      const valid = isValidPhoneNumber(phoneNumber.value);
+      phoneError.style.display = valid ? 'none' : 'block';
+      return valid;
+    }
+
+    function updateSelection() {
+      const paymentMethodText = selectedPaymentMethod === 'mpesa' ? 'Lipa na Mpesa' : 'Airtel Money';
+
+      // Show phone input section if amount is selected
+      if (selectedAmount) {
+        phoneInputSection.style.display = 'block';
+      } else {
+        phoneInputSection.style.display = 'none';
+        phoneError.style.display = 'none';
+      }
+
+      if (isCustomAmount && selectedAmount) {
+        selectedInfo.style.display = 'block';
+        selectionText.innerHTML = `<strong>Payment Method:</strong> ${paymentMethodText}<br /><strong>Amount:</strong> Sh. ${selectedAmount}`;
+      } else if (selectedCard) {
+        const cardName = selectedCard.charAt(0).toUpperCase() + selectedCard.slice(1);
+        selectedInfo.style.display = 'block';
+        selectionText.innerHTML = `<strong>Payment Method:</strong> ${paymentMethodText}<br /><strong>Card:</strong> ${cardName}<br /><strong>Amount:</strong> Sh. ${selectedAmount}`;
+      } else {
+        selectedInfo.style.display = 'none';
+      }
+    }
+
+    // Submit button handler
+    submitBtn.addEventListener('click', () => {
+      if (submitBtn.disabled) return;
+
+      let promptMsg = `You will receive a prompt on your phone to enter your ${
+        selectedPaymentMethod === 'mpesa' ? 'M-Pesa' : 'Airtel Money'
+      } PIN to complete the payment.`;
+      alert(promptMsg);
+
+      // Here you would trigger the actual payment integration request...
+    });
+
+    // Keyboard enter to submit if valid
+    phoneNumber.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !submitBtn.disabled) {
+        submitBtn.click();
+      }
+    });
+
+    customAmountInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !submitBtn.disabled) {
+        submitBtn.click();
+      }
+    });
+
+    // Initialize the selection summary on page load (default payment method active)
+    updateSelection();
+  </script>
+</body>
+</html>
